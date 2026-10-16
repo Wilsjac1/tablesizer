@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Conference Table Size Calculator: Room, Seats & Dimensions | TableSizer</title><meta name="description" content="Free conference table size calculator. Enter room size and headcount to get table length, width, shape, and max seats, with a top-down diagram."><link rel="canonical" href="https://tablesizer.com/">
+<meta property="og:title" content="Conference Table Size Calculator: Room, Seats & Dimensions | TableSizer"><meta property="og:description" content="Free conference table size calculator. Enter room size and headcount to get table length, width, shape, and max seats, with a top-down diagram."><link rel="stylesheet" href="style.css"></head><body>
+<header><div class="w"><p class="logo"><a href="index.html" style="margin:0">TableSizer</a></p><nav><a href="conference-table-dimensions.html">Dimensions</a><a href="conference-table-size-chart.html">Seating chart</a><a href="boardroom-table-sizes.html">Boardroom</a><a href="makers.html">Get quotes</a></nav></div></header><main class="w">
+<section class="hero"><h1>Conference table size calculator</h1><p>Enter your room and headcount. Get the right table length and width, the best shapes, and how many people the room really seats.</p></section>
+<div class="grid"><form id="f" class="card" oninput="run()" onsubmit="event.preventDefault();run()">
+<div class="row"><div><label for="rl">Room length (ft)</label><input id="rl" type="number" value="20" min="6" step="0.5"></div><div><label for="rw">Room width (ft)</label><input id="rw" type="number" value="14" min="6" step="0.5"></div></div>
+<label for="s">Seats needed (blank = biggest that fits)</label><input id="s" type="number" value="10" min="4" max="40">
+<label for="sp">Seating style</label><select id="sp"><option value="30">Standard: 30 in per person</option><option value="36">Comfortable: 36 in per person</option><option value="42">Spacious (laptops/docs): 42 in</option></select>
+<label for="c">Chair clearance, table edge to wall</label><select id="c"><option value="42">42 in (minimum)</option><option value="48" selected>48 in (recommended)</option><option value="54">54 in (walkway behind chairs)</option></select>
+<button style="margin-top:14px">Calculate</button></form>
+<div class="card out" id="out"></div></div>
+<aside class="card sponsor"><small>SPONSOR</small><p><strong>Your brand here.</strong> Reach office managers & designers planning meeting rooms. <a href="mailto:hello@tablesizer.com">Advertise</a></p></aside>
+<section class="card" id="method"><h2>Methodology & sources</h2><ul>
+<li><b>Space per person:</b> 30 in minimum, 36 in comfortable, 42 in generous, 48 in for spread-out papers (<a href="https://www.custom-conference-tables.com/about-tables/size-seating-guide/number-of-seats/">Paul Downs seating guide</a>; <a href="https://ofwgo.com/choosing-the-right-size-conference-table/">OFW sizing guide</a>).</li>
+<li><b>Seats on a rectangle:</b> 2 × floor(length ÷ spacing) + 1 at each end. This reproduces published charts (e.g. 48×96 in = 8, 48×144 = 10, 48×168 = 12 at 30 in).</li>
+<li><b>Width:</b> 36–42 in up to 6 ft long, 42–48 in to 10 ft, 48–54 in to 16 ft, 54–60 in to 22 ft, 60 in+ beyond. Based on the same charts.</li>
+<li><b>Clearance:</b> 42–48 in from table edge to wall so chairs can pull out and people can pass; OfficeSimpli’s room table assumes 4 ft on every side (<a href="https://www.officesimpli.com/pages/conference-table-size-calculator">OfficeSimpli</a>).</li>
+<li>Results are planning estimates. Leave extra room for credenzas, displays, and doors.</li></ul></section>
+<section class="card" style="background:#2b2420;color:#f3ede6"><h2>Get quotes from custom makers</h2><p>Know your size? Compare solid-wood builders who make conference tables to order.</p><a class="btn" href="makers.html">Compare makers →</a></section>
+<script src="calc.js"></script><script>
+function ft(i){return (i/12).toFixed(i%12?1:0)+' ft ('+i+' in)'}
+function run(){var g=id=>document.getElementById(id).value;var o={roomL:+g('rl'),roomW:+g('rw'),seats:+g('s')||0,spacing:+g('sp'),clearance:+g('c')};
+var r=TP.plan(o),h='';if(r.maxSeats===0){document.getElementById('out').innerHTML='<p class="warn">'+r.warnings[0]+'</p>';return}
+h+='<p>Recommended table length<br><b>'+ft(r.length[0])+(r.length[1]>r.length[0]?' – '+ft(r.length[1]):'')+'</b></p>';
+h+='<p>Width<br><b>'+r.width[0]+'–'+r.width[1]+' in</b></p><p>Max seats this room fits: <b>'+r.maxSeats+'</b> <small>(up to '+ft(r.maxLength)+' × '+r.maxWidth+' in)</small></p>';
+h+='<p>Shapes that work: '+r.shapes.join(', ')+'</p>';r.warnings.forEach(w=>h+='<p class="warn">'+w+'</p>');
+var L=Math.max(o.roomL,o.roomW)*12,W=Math.min(o.roomL,o.roomW)*12,tl=Math.min(r.length[0],r.maxLength),tw=Math.min(r.width[1],r.maxWidth),x=(L-tl)/2,y=(W-tw)/2,n=o.seats&&r.fits?o.seats:TP.seatsFor(tl,o.spacing),side=Math.floor((n-2)/2),ch='';
+for(var i=0;i<side;i++){var cx=x+o.spacing*(i+.5)+(tl-side*o.spacing)/2;ch+='<circle cx="'+cx+'" cy="'+(y-12)+'" r="9"/><circle cx="'+cx+'" cy="'+(y+tw+12)+'" r="9"/>'}
+ch+='<circle cx="'+(x-12)+'" cy="'+W/2+'" r="9"/><circle cx="'+(x+tl+12)+'" cy="'+W/2+'" r="9"/>';
+h+='<svg viewBox="-10 -10 '+(L+20)+' '+(W+20)+'" role="img" aria-label="Top-down room diagram"><rect x="0" y="0" width="'+L+'" height="'+W+'" fill="none" stroke="#2b2420" stroke-width="3"/><rect x="'+x+'" y="'+y+'" width="'+tl+'" height="'+tw+'" rx="6" fill="#a8743f"/><g fill="#5b6770">'+ch+'</g></svg><small>Room '+o.roomL+'×'+o.roomW+' ft, '+n+' seats shown</small>';
+document.getElementById('out').innerHTML=h}run();</script>
+<section class="card"><h2>The Conference Room Brief</h2><p>One short email a month on meeting-room planning, furniture, and AV.</p><form onsubmit="event.preventDefault();this.innerHTML=\x27<p>Thanks! (Placeholder, signups not active yet.)</p>\x27"><div class="row"><div><input type="email" required placeholder="you@company.com" aria-label="Email"></div><div style="flex:0"><button>Subscribe</button></div></div></form></section></main><footer><div class="w"><span>© 2026 TableSizer · Sizing guidance only; confirm with your maker.</span><span><a href="makers.html#list">List your shop</a><a href="index.html#method">Methodology</a></span></div></footer></body></html>
