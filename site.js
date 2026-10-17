@@ -1,7 +1,7 @@
 /* TableSizer analytics — privacy-friendly, cookieless, OFF until Jake pastes a token.
    See ANALYTICS.md. Supported: GoatCounter (recommended for custom events) or Cloudflare Web Analytics (pageviews only).
    1) Create the free account (Jake only). 2) Paste ONE value below. 3) Redeploy. No cookies are set by this code. */
-window.TABLESIZER_ANALYTICS = { provider: '', goatCounterCode: '', cloudflareToken: '' };
+window.TABLESIZER_ANALYTICS = { provider: 'goatcounter', goatCounterCode: 'tablesizer', cloudflareToken: '' };
 (function (cfg) {
   window.__tsEvents = [];
   window.tsTrack = function (name, data) {
