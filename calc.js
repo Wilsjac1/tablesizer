@@ -67,7 +67,10 @@
     // legacy fields
     r.maxLength = m ? m.L : 0; r.maxWidth = m ? m.W : 0;
     if (!m) { r.fits = false; r.warnings.push('Room too small for a conference table with this clearance.'); return r; }
-    if (o.seats) { var t = tableFor(shape, o.seats, s); r.table = t; r.fits = fits(shape, t, u);
+    if (o.seats) { var t = tableFor(shape, o.seats, s);
+      // use the narrower end of the standard width range when the room requires it
+      if ((shape === 'rectangle' || shape === 'boat' || shape === 'racetrack') && t.W > u.y && widthFor(t.L)[0] <= u.y) t.W = Math.floor(u.y / 6) * 6;
+      r.table = t; r.fits = fits(shape, t, u);
       r.length = [t.L, t.L + (shape === 'round' ? 0 : 12)]; r.width = shape === 'rectangle' || shape === 'boat' || shape === 'racetrack' ? widthFor(t.L) : [t.W, t.W];
       if (!r.fits) r.warnings.push(o.seats + ' seats need a ' + t.L + ' in ' + LABEL[shape].toLowerCase() + ' table; this room fits up to ' + m.seats + ' on this shape.');
     } else { r.table = { L: m.L, W: m.W }; r.fits = true; r.length = [m.L, m.L]; r.width = [m.W, m.W]; }
@@ -115,7 +118,13 @@
     }
     return c;
   }
-  var api = { SHAPES: SHAPES, LABEL: LABEL, ARM: ARM, widthFor: widthFor, seatsFor: seatsFor, lengthFor: lengthFor, seatsOn: seatsOn,
+  var PRESETS = [
+    { id:'huddle', label:'Small huddle', roomL:144, roomW:120, seats:6, shape:'rectangle', clearance:42 },
+    { id:'boardroom', label:'Boardroom', roomL:240, roomW:168, seats:10, shape:'rectangle', clearance:48 },
+    { id:'executive', label:'Executive boardroom', roomL:360, roomW:240, seats:16, shape:'boat', clearance:48 },
+    { id:'training', label:'Training / U-shape', roomL:312, roomW:264, seats:14, shape:'u', wall:true, clearance:48 }
+  ];
+  var api = { PRESETS: PRESETS, SHAPES: SHAPES, LABEL: LABEL, ARM: ARM, widthFor: widthFor, seatsFor: seatsFor, lengthFor: lengthFor, seatsOn: seatsOn,
     tableFor: tableFor, footprint: footprint, usable: usable, fits: fits, maxFor: maxFor, plan: plan, whatFits: whatFits, chairs: chairs };
   root.TP = api;
 })(typeof module !== 'undefined' ? module.exports : window);

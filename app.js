@@ -18,6 +18,11 @@ sr.addEventListener('input',function(){sn.value=sr.value;S.n=+sr.value;S.auto=fa
 sn.addEventListener('input',function(){if(+sn.value){sr.value=sn.value;S.n=+sn.value;S.auto=false;$('#auto').checked=false;go()}});
 $('#auto').checked=S.auto;$('#auto').addEventListener('change',function(e){S.auto=e.target.checked;go()});
 $('#wall').checked=S.wall;$('#wall').addEventListener('change',function(e){S.wall=e.target.checked;go()});
+D.querySelectorAll('#presets button').forEach(function(b){b.addEventListener('click',function(){var p=TP.PRESETS[+b.dataset.i];if(!p)return;
+ S.l=p.roomL;S.w=p.roomW;S.n=p.seats;S.auto=false;S.sh=p.shape;S.wall=!!p.wall;if(p.clearance)S.c=p.clearance;
+ sr.value=sn.value=S.n;$('#auto').checked=false;$('#wall').checked=S.wall;syncL();syncW();track('preset',{preset:p.id});go();})});
+var _pt;function track(n,d){if(window.tsTrack){clearTimeout(_pt);_pt=setTimeout(function(){window.tsTrack(n,d||{shape:S.sh,seats:S.n,room_in:[S.l,S.w]})},900)}}
+
 function seg(id,key,num){var g=$('#'+id);g.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){S[key]=num?+b.dataset.v:b.dataset.v;if(key==='u'){syncL();syncW()}go()})});
  return function(){g.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v==String(S[key])))})}}
 var segs=[seg('spacing','s',1),seg('clear','c',1),seg('shape','sh'),seg('units','u')];
@@ -57,6 +62,7 @@ function go(){segs.forEach(function(f){f()});
   o+='<div class="stat"><span>'+(S.sh==='u'?'Head width':S.sh==='round'||S.sh==='v'?'Footprint':'Width')+'</span><b>'+(S.sh==='v'?fmt(Math.round(TP.footprint('v',t).y)):fmt(t.W))+'</b><span>'+(S.sh==='rectangle'||S.sh==='boat'||S.sh==='racetrack'?'range '+inW(r.width[0])+'–'+inW(r.width[1]):inW(t.W))+'</span></div>';
   o+='<div class="stat"><span>Seats at this table</span><b>'+r.seats+'</b><span>room max '+r.maxSeats+' ('+shapeName(S.sh).toLowerCase()+')</span></div></div>'}
  o+='<div class="plan" id="planBox">'+draw(r)+'</div>';
+ if(t){var nc=TP.chairs(r.shape,t,S.s).length;o+='<p class="planmeta" role="status">'+nc+' chairs shown · '+fmt(S.c)+' clearance on all sides'+(S.wall?' · credenza/display wall allowed for':'')+' · '+fmt(S.s)+' per person</p>'}
  if(r.options&&r.options.length){o+='<div class="fits"><span class="label">What fits this room</span><ol>';r.options.forEach(function(x){o+='<li><button class="opt" data-sh="'+x.shape+'">'+x.label+' <span>'+(x.shape==='round'?'⌀ '+fmt(x.L):x.shape==='v'?fmt(x.L)+' legs':fmt(x.L)+' × '+fmt(x.W))+' · seats '+x.seats+'</span></button></li>'});o+='</ol></div>'}
  $('#out').innerHTML=o;D.querySelectorAll('.opt').forEach(function(b){b.addEventListener('click',function(){S.sh=b.dataset.sh;go()})});
  // URL + CTA
@@ -64,9 +70,11 @@ function go(){segs.forEach(function(f){f()});
  history.replaceState(null,'','?'+p.toString());
  if(t){var cta=new URLSearchParams({utm_source:'tablesizer',utm_medium:'referral',utm_campaign:'planner',shape:S.sh,length_in:t.L,width_in:t.W,seats:r.seats,size:t.L+'x'+t.W+'in'});
   $('#quote').href='https://fargowoodworks.com/?'+cta.toString();$('#quote').textContent='Request a quote for this table'}
+ track('planner_used');
  $('#ph').textContent=shapeName(S.sh)+' table '+(t?fmt(t.L)+' × '+fmt(t.W):'')+' · '+r.seats+' seats · room '+fmt(S.l)+' × '+fmt(S.w)+' · '+fmt(S.c)+' clearance · '+fmt(S.s)+' per seat';
 }
 $('#share').addEventListener('click',function(){var b=this,u=location.href;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){b.textContent='Link copied ✓'},function(){prompt('Copy this link',u)});setTimeout(function(){b.textContent='Copy link to plan'},2200)});
 $('#print').addEventListener('click',function(){window.print()});
+var dl=$('#download');if(dl)dl.addEventListener('click',function(){if(window.tsTrack)window.tsTrack('plan_download',{});window.print()});
 syncL();syncW();go();
 })();

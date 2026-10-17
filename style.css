@@ -73,3 +73,5 @@ footer h4{font:400 .72rem var(--sans);letter-spacing:.22em;text-transform:upperc
 body,.planner{background:#fff}.planner{display:block;border:0}.output{padding:0}.printhead{display:block!important;margin-bottom:12px}}
 .printhead{display:none}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.planmeta{font-size:.85rem;color:var(--soft);border-bottom:1px solid var(--rule);padding:10px 0;margin:0}

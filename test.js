@@ -14,4 +14,6 @@ t('30x20 room max rectangle',()=>{const r=TP.plan({roomL:360,roomW:240,spacing:3
 t('credenza wall shortens usable length',()=>{const a1=TP.usable({roomL:240,roomW:168,clearance:48}),b=TP.usable({roomL:240,roomW:168,clearance:48,wall:true});a.equal(a1.x-b.x,20)});
 t('whatFits returns 1-3 fitting options',()=>{const o=TP.whatFits({roomL:300,roomW:204,seats:12,spacing:30,clearance:48});a.ok(o.length>=1&&o.length<=3);o.forEach(x=>a.ok(x.seats>=12))});
 t('too-many-seats warns',()=>{const r=TP.plan({roomL:240,roomW:168,seats:20,spacing:36,clearance:48});a.ok(!r.fits);a.ok(r.warnings.length)});
+t('room presets are valid and fit',()=>{a.equal(TP.PRESETS.length,4);TP.PRESETS.forEach(p=>{const r=TP.plan({roomL:p.roomL,roomW:p.roomW,seats:p.seats,spacing:30,clearance:p.clearance||48,shape:p.shape,wall:!!p.wall});a.ok(r.fits,p.id+' '+JSON.stringify(r));a.ok(TP.SHAPES.includes(p.shape),p.id)})});
+t('training preset uses U-shape',()=>{const p=TP.PRESETS.find(x=>x.id==='training');a.equal(p.shape,'u');a.ok(p.wall)});
 console.log(n+' TESTS PASSED');
