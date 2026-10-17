@@ -79,41 +79,7 @@ $('#share').addEventListener('click',function(){var b=this,u=location.href;(navi
 $('#print').addEventListener('click',function(){window.print()});
 var dl=$('#download');if(dl)dl.addEventListener('click',function(){if(window.tsTrack)window.tsTrack('plan_download',{});window.print()});
 
-/* Guided flow */
-var G={step:0,started:false,dontKnow:false,roomSize:'medium',shapePref:'any'};
-var panels=[0,1,2,3].map(function(i){return $('#step-'+i)});
-function updateSummary(){var sit={30:'Cozy seating',36:'Standard seating',42:'Spacious seating'}[S.s]||(S.s+'\u2033 per person');
- $('#sumPeople').textContent=(S.auto?'Up to ':'')+S.n+' people';$('#sumRoom').textContent=G.dontKnow?('Common room \u2014 biggest that fits'):fmt(S.l)+' \u00d7 '+fmt(S.w)+' room';$('#sumSit').textContent=sit;$('#gSummary').hidden=G.step<1}
-function showStep(n){G.step=n;updateSummary();$('#gProg').style.setProperty('--fill',((n+1)*25)+'%');panels.forEach(function(p,i){p.hidden=i!==n});
- var lis=D.querySelectorAll('#gProg li');lis.forEach(function(li,i){li.classList.toggle('on',i===n);li.classList.toggle('done',i<n);if(i===n)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current')});
- $('#gProg').setAttribute('aria-valuenow',n+1);$('#gBack').style.visibility=n===0?'hidden':'visible';
- var nx=$('#gNext');nx.style.visibility=n===3?'hidden':'visible';nx.textContent=n===2?'See my size':'Next';
- if(n===3)$('#step-3').classList.remove('fine');
- var h=panels[n].querySelector('h2,[tabindex]');}
-function startGuided(){if(!G.started){G.started=true;track('guided_start');showStep(0)}}
-$('#gStart').addEventListener('click',function(){startGuided();$('#planner').scrollIntoView({behavior:'smooth'});panels[0].querySelector('h2').focus()});
-D.querySelectorAll('[data-seats]').forEach(function(b){b.addEventListener('click',function(){startGuided();D.querySelectorAll('[data-seats]').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel');
- S.n=+b.dataset.seats;sr.value=Math.min(30,S.n);sn.value=S.n;$('#gSeats').value=S.n;S.auto=false;$('#auto').checked=false;showStep(1);panels[1].querySelector('h2').focus()})});
-$('#gSeats').addEventListener('input',function(){var v=+this.value;if(v>=2&&v<=60){S.n=v;sr.value=Math.min(30,v);sn.value=v;S.auto=false;$('#auto').checked=false}});
-$('#gDontKnow').addEventListener('change',function(){G.dontKnow=this.checked;$('#gCommon').hidden=!this.checked;$('#gRoomL').disabled=$('#gRoomW').disabled=this.checked});
-D.querySelectorAll('[data-room]').forEach(function(b){b.addEventListener('click',function(){D.querySelectorAll('[data-room]').forEach(function(x){x.removeAttribute('aria-pressed')});b.setAttribute('aria-pressed','true');G.roomSize=b.dataset.room})});
-D.querySelectorAll('[data-sit]').forEach(function(b){b.addEventListener('click',function(){D.querySelectorAll('[data-sit]').forEach(function(x){x.removeAttribute('aria-pressed')});b.setAttribute('aria-pressed','true');S.s=+b.dataset.sit;go()})});
-D.querySelectorAll('[data-gshape]').forEach(function(b){b.addEventListener('click',function(){D.querySelectorAll('[data-gshape]').forEach(function(x){x.removeAttribute('aria-pressed')});b.setAttribute('aria-pressed','true');G.shapePref=b.dataset.gshape})});
-function complete(){if(G.dontKnow){var r=TP.COMMON_ROOMS[G.roomSize];S.l=r[0];S.w=r[1];S.auto=true;$('#auto').checked=true}
- else{S.l=Math.round(($('#gRoomL').value||20)*12);S.w=Math.round(($('#gRoomW').value||14)*12);S.auto=false;$('#auto').checked=false}
- if(G.shapePref!=='any')S.sh=G.shapePref;else{var o=TP.plan({roomL:S.l,roomW:S.w,seats:S.auto?0:S.n,spacing:S.s,clearance:S.c,shape:S.sh,wall:S.wall}).options;if(o&&o.length)S.sh=o[0].shape}
- sr.value=Math.min(30,S.n);sn.value=S.n;syncL();syncW();go();showStep(3);track('guided_complete');$('#step-3').scrollIntoView({behavior:'smooth'})}
-$('#gNext').addEventListener('click',function(){startGuided();
- if(G.step===0){if(!(S.n>=2&&S.n<=60)){$('#gSeats').focus();return}showStep(1)}
- else if(G.step===1)showStep(2); else if(G.step===2)complete();
- if(G.step<3)panels[G.step].querySelector('h2').focus()});
-$('#gBack').addEventListener('click',function(){if(G.step>0){showStep(G.step-1);panels[G.step].querySelector('h2').focus()}});
-D.querySelectorAll('[data-jump]').forEach(function(b){b.addEventListener('click',function(){showStep(+b.dataset.jump);panels[G.step].querySelector('h2').focus()})});
-$('#fineBtn').addEventListener('click',function(){var p=$('#step-3'),on=p.classList.toggle('fine');this.setAttribute('aria-expanded',on);this.textContent=on?'Hide fine-tune':'Fine-tune this plan';if(on)syncL(),syncW(),go()});
-D.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.matches&&e.target.matches('.g-panel input')){e.preventDefault();$('#gNext').click()}});
 if(!new URLSearchParams(location.search).has('s'))S.s=36;
-$('#gRoomL').value=+(S.l/12);$('#gRoomW').value=+(S.w/12);$('#gSeats').value=S.n;
-if(new URLSearchParams(location.search).toString()){G.started=true;showStep(3)}else showStep(0);
 
 syncL();syncW();go();
 })();

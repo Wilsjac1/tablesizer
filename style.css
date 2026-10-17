@@ -97,7 +97,7 @@ body,.planner{background:#fff}.planner{display:block;border:0}.output{padding:0}
 /* Polish: stage, rhythm, transitions, summary, trust */
 :root{--u:8px}
 .label{font-size:.65rem;letter-spacing:.26em}
-.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"hero photo" "guided photo";column-gap:56px;align-items:start;padding-top:48px}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"hero photo";column-gap:56px;align-items:start;padding-top:48px}
 .g-hero{grid-area:hero;padding:24px 0 8px;text-align:left}.g-hero h1{font-size:clamp(2.3rem,4.2vw,3.3rem);line-height:1.05}
 .g-hero .lede{margin:0 0 24px}.stage .guided{grid-area:guided;max-width:none;margin:0;padding:16px 0 56px}
 .stage-photo{grid-area:photo;margin:0;position:sticky;top:24px}.stage-photo img{width:100%;height:min(78vh,720px);min-height:480px;object-fit:cover}
@@ -117,3 +117,11 @@ input[type=number]{min-height:44px}.g-custom input,.g-room input{height:48px}
 @media(max-width:700px){.trust{grid-template-columns:1fr}}
 .section{padding:120px 0}
 @media(prefers-reduced-motion:reduce){.g-panel{animation:none}.progress::after{transition:none}}
+
+/* All-at-once planner */
+.plannerwrap{padding:8px 28px 80px}.p-head{max-width:720px;margin-bottom:8px}
+.plannergrid{display:grid;grid-template-columns:360px 1fr;gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--white)}
+.plannergrid .controls{padding:32px;border-right:1px solid var(--rule);background:var(--white)}
+.plannergrid .output{padding:32px 36px;background:var(--white)}
+@media(max-width:940px){.plannergrid{grid-template-columns:1fr}.plannergrid .controls{border-right:0;border-bottom:1px solid var(--rule);padding:24px 20px}.plannergrid .output{padding:24px 18px}}
+@media print{.plannergrid{display:block;border:0}.plannergrid .controls{display:none}}
