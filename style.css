@@ -75,3 +75,45 @@ body,.planner{background:#fff}.planner{display:block;border:0}.output{padding:0}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
 .planmeta{font-size:.85rem;color:var(--soft);border-bottom:1px solid var(--rule);padding:10px 0;margin:0}
+/* Guided flow */
+.g-hero{padding:56px 28px 8px;text-align:center}.g-hero h1{font-size:clamp(2.2rem,5vw,3.6rem);margin-bottom:.25em}.g-hero .lede{margin:0 auto 22px}
+.guided{max-width:880px;margin:0 auto;padding:24px 28px 72px}
+.progress ol{display:flex;list-style:none;margin:0 0 8px;padding:0;border-bottom:1px solid var(--rule)}
+.progress li{flex:1;text-align:center;padding:10px 4px;font:400 .68rem var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--soft);border-bottom:2px solid transparent;margin-bottom:-1px}
+.progress li.on{color:var(--ink);border-color:var(--ink)}.progress li.done{color:var(--ink)}
+.g-panel{padding:36px 0 8px}.g-panel h2{margin-bottom:.2em}.g-sub{color:var(--soft);margin:.2em 0 20px}
+.g-choices{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:560px){.g-choices{grid-template-columns:repeat(3,1fr)}}
+.g-choices.three{grid-template-columns:repeat(3,1fr)}.g-choices.stack{grid-template-columns:1fr}
+.g-choices button{min-height:64px;background:var(--white);border:1px solid var(--rule);color:var(--ink);font:300 1.5rem var(--serif);cursor:pointer;border-radius:0;padding:12px}
+.g-choices.stack button{font:300 1rem var(--sans);text-align:left}.g-choices.stack b{font:400 1.3rem var(--serif);display:block}
+.g-choices.stack span{color:var(--soft);font-size:.9rem}.g-choices button small{font:300 .8rem var(--sans);color:var(--soft)}
+.g-choices button[aria-pressed="true"],.g-choices button.sel{background:var(--ink);color:#fff}.g-choices button.sel small,.g-choices button[aria-pressed="true"] small,.g-choices button.sel span{color:#ddd}
+.g-custom{display:flex;gap:14px;align-items:center;margin-top:18px;color:var(--soft)}.g-custom input{width:90px}
+.g-room{display:flex;gap:16px;align-items:end;flex-wrap:wrap}.g-room label{display:grid;gap:6px;color:var(--soft);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}.g-room input{width:130px}
+.g-nav{display:flex;justify-content:space-between;align-items:center;padding:26px 0 8px;border-top:1px solid var(--rule);margin-top:28px}
+.guided .planner,.guided .controls{border:0}.results .controls{display:none;background:var(--white);border:1px solid var(--rule);padding:22px;margin:0 0 24px}
+.results.fine .controls{display:block}.results .output{padding:0}
+@media print{.g-hero,.stage-photo,.progress,.g-nav,.g-panel:not(.results){display:none!important}.results .controls{display:none!important}}
+/* Polish: stage, rhythm, transitions, summary, trust */
+:root{--u:8px}
+.label{font-size:.65rem;letter-spacing:.26em}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"hero photo" "guided photo";column-gap:56px;align-items:start;padding-top:48px}
+.g-hero{grid-area:hero;padding:24px 0 8px;text-align:left}.g-hero h1{font-size:clamp(2.3rem,4.2vw,3.3rem);line-height:1.05}
+.g-hero .lede{margin:0 0 24px}.stage .guided{grid-area:guided;max-width:none;margin:0;padding:16px 0 56px}
+.stage-photo{grid-area:photo;margin:0;position:sticky;top:24px}.stage-photo img{width:100%;height:min(78vh,720px);min-height:480px;object-fit:cover}
+.stage-photo figcaption{font-size:.75rem;color:var(--soft);padding-top:10px}
+@media(max-width:900px){.stage{grid-template-columns:1fr;grid-template-areas:"hero" "photo" "guided"}.stage-photo{position:static}.stage-photo img{height:240px;min-height:0}}
+.btn{min-height:52px;display:inline-flex;align-items:center;justify-content:center}
+.g-choices button{min-height:68px}.g-nav .btn{min-width:132px}
+input[type=number]{min-height:44px}.g-custom input,.g-room input{height:48px}
+.progress{position:relative}.progress ol{position:relative}
+.progress::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;background:var(--ink);width:var(--fill,25%);transition:width .45s ease}
+.g-panel{animation:gIn .45s ease both}@keyframes gIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.g-summary{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0 0;color:var(--soft);font-size:.95rem}
+.g-summary button{background:none;border:0;border-bottom:1px solid var(--ink);padding:2px 0;cursor:pointer;color:var(--ink);font:inherit}
+.g-summary[hidden]{display:none}
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:28px;border-top:1px solid var(--rule);margin-top:36px;padding-top:28px;align-items:start}
+.trust img{width:100%;height:100%;max-height:300px;object-fit:cover}.trust h3{margin-bottom:.3em}.trust .why{color:var(--soft)}
+@media(max-width:700px){.trust{grid-template-columns:1fr}}
+.section{padding:120px 0}
+@media(prefers-reduced-motion:reduce){.g-panel{animation:none}.progress::after{transition:none}}

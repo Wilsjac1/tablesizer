@@ -16,4 +16,7 @@ t('whatFits returns 1-3 fitting options',()=>{const o=TP.whatFits({roomL:300,roo
 t('too-many-seats warns',()=>{const r=TP.plan({roomL:240,roomW:168,seats:20,spacing:36,clearance:48});a.ok(!r.fits);a.ok(r.warnings.length)});
 t('room presets are valid and fit',()=>{a.equal(TP.PRESETS.length,4);TP.PRESETS.forEach(p=>{const r=TP.plan({roomL:p.roomL,roomW:p.roomW,seats:p.seats,spacing:30,clearance:p.clearance||48,shape:p.shape,wall:!!p.wall});a.ok(r.fits,p.id+' '+JSON.stringify(r));a.ok(TP.SHAPES.includes(p.shape),p.id)})});
 t('training preset uses U-shape',()=>{const p=TP.PRESETS.find(x=>x.id==='training');a.equal(p.shape,'u');a.ok(p.wall)});
+t('guided step validation',()=>{a.ok(TP.stepValid(0,{seats:8}));a.ok(!TP.stepValid(0,{seats:1}));a.ok(!TP.stepValid(0,{seats:61}));a.ok(TP.stepValid(1,{dontKnow:true}));a.ok(!TP.stepValid(1,{dontKnow:false,roomL:60,roomW:120}));a.ok(TP.stepValid(1,{dontKnow:false,roomL:144,roomW:120}))});
+t('guided nextStep clamps and blocks invalid',()=>{a.equal(TP.nextStep(0,{seats:8}),1);a.equal(TP.nextStep(0,{seats:1}),0);a.equal(TP.nextStep(2,{seats:8,roomL:144,roomW:120}),3);a.equal(TP.nextStep(3,{seats:8}),3)});
+t('applyGuided dont-know uses common room + biggest-that-fits',()=>{const g=TP.applyGuided({dontKnow:true,roomSize:'large',seats:12});a.equal(g.seats,0);a.equal(g.roomL,360);const k=TP.applyGuided({dontKnow:false,roomL:240,roomW:168,seats:10});a.equal(k.seats,10)});
 console.log(n+' TESTS PASSED');

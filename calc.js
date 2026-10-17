@@ -118,13 +118,26 @@
     }
     return c;
   }
+  // Guided flow: pure step logic, unit-tested in test.js
+  var STEPS = ['people', 'room', 'sitting', 'results'];
+  function stepValid(step, st) {
+    if (step === 0) return st.seats >= 2 && st.seats <= 60;
+    if (step === 1) return st.dontKnow || (st.roomL >= 72 && st.roomW >= 72);
+    return true;
+  }
+  function nextStep(cur, st) { return stepValid(cur, st) ? Math.min(STEPS.length - 1, cur + 1) : cur; }
+  function applyGuided(st) { // returns planner inputs; don't-know => biggest-that-fits in a common room
+    if (st.dontKnow) { var p = COMMON_ROOMS[st.roomSize || 'medium']; return { roomL: p[0], roomW: p[1], seats: 0, shape: st.shape || 'any' }; }
+    return { roomL: st.roomL, roomW: st.roomW, seats: st.seats, shape: st.shape || 'any' };
+  }
+  var COMMON_ROOMS = { small: [144, 120], medium: [240, 168], large: [360, 240] };
   var PRESETS = [
     { id:'huddle', label:'Small huddle', roomL:144, roomW:120, seats:6, shape:'rectangle', clearance:42 },
     { id:'boardroom', label:'Boardroom', roomL:240, roomW:168, seats:10, shape:'rectangle', clearance:48 },
     { id:'executive', label:'Executive boardroom', roomL:360, roomW:240, seats:16, shape:'boat', clearance:48 },
     { id:'training', label:'Training / U-shape', roomL:312, roomW:264, seats:14, shape:'u', wall:true, clearance:48 }
   ];
-  var api = { PRESETS: PRESETS, SHAPES: SHAPES, LABEL: LABEL, ARM: ARM, widthFor: widthFor, seatsFor: seatsFor, lengthFor: lengthFor, seatsOn: seatsOn,
+  var api = { STEPS: STEPS, stepValid: stepValid, nextStep: nextStep, applyGuided: applyGuided, COMMON_ROOMS: COMMON_ROOMS, PRESETS: PRESETS, SHAPES: SHAPES, LABEL: LABEL, ARM: ARM, widthFor: widthFor, seatsFor: seatsFor, lengthFor: lengthFor, seatsOn: seatsOn,
     tableFor: tableFor, footprint: footprint, usable: usable, fits: fits, maxFor: maxFor, plan: plan, whatFits: whatFits, chairs: chairs };
   root.TP = api;
 })(typeof module !== 'undefined' ? module.exports : window);
