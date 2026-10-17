@@ -21,8 +21,8 @@ window.TABLESIZER_ANALYTICS = { provider: 'goatcounter', goatCounterCode: 'table
     var a = e.target.closest && e.target.closest('a[href*="fargowoodworks.com"]');
     if (a) window.tsTrack('quote_click', { href: a.getAttribute('href') });
   });
+  // Newsletter: native POST to Kit (no preventDefault — the browser submits to app.kit.com).
   document.querySelectorAll('form.nl').forEach(function (f) {
-    f.addEventListener('submit', function (e) { e.preventDefault(); window.tsTrack('newsletter_click', {});
-      f.outerHTML = '<p class="note">Thank you. The newsletter launches soon; nothing has been sent yet.</p>'; });
+    f.addEventListener('submit', function () { window.tsTrack('newsletter_click', {}); });
   });
 })(window.TABLESIZER_ANALYTICS);
