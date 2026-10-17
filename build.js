@@ -1,0 +1,92 @@
+// node build.js -> regenerates all HTML pages from shared layout + calc.js data
+const fs=require('fs'),TP=require('./calc.js').TP,SITE='https://tablesizer.com/';
+const ft=i=>{const f=Math.floor(i/12),r=i%12;return f+' ft'+(r?' '+r+' in':'')};
+const SRC={pd:'<a href="https://www.custom-conference-tables.com/about-tables/size-seating-guide/number-of-seats/">Paul Downs seating guide</a>',ofw:'<a href="https://ofwgo.com/choosing-the-right-size-conference-table/">OFW sizing guide</a>',os:'<a href="https://www.officesimpli.com/pages/conference-table-size-calculator">OfficeSimpli</a>'};
+const NAV=[['./','Planner'],['conference-table-dimensions.html','Dimensions'],['conference-table-size-chart.html','Size Chart'],['boardroom-table-sizes.html','Boardroom'],['makers.html','Makers']];
+function page(file,title,desc,body,extra=''){const url=SITE+(file==='index.html'?'':file);
+const nav=NAV.map(([h,t])=>`<a href="${h}"${(h==='./'?'index.html':h)===file?' aria-current="page"':''}>${t}</a>`).join('');
+return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title><meta name="description" content="${desc}"><link rel="canonical" href="${url}">
+<meta property="og:type" content="website"><meta property="og:title" content="${title}"><meta property="og:description" content="${desc}"><meta property="og:url" content="${url}"><meta property="og:image" content="${SITE}img/hero-meeting-room.jpg"><meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f7f5f1"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='12' width='26' height='8' fill='%23222'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">${extra}</head><body><a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap"><a class="brand" href="./">TableSizer</a></div></header><nav class="nav" aria-label="Primary"><div class="wrap">${nav}</div></nav>
+<main id="main">${body}</main>
+<footer><div class="wrap"><div><h4>TableSizer</h4><p>A planning reference for conference and boardroom tables. Guidance only; confirm final dimensions with your maker.</p><p>© 2026 TableSizer</p></div>
+<div><h4>Guides</h4><a href="conference-table-dimensions.html">Conference table dimensions</a><a href="conference-table-size-chart.html">Size chart by seats</a><a href="boardroom-table-sizes.html">Boardroom tables</a><a href="./#method">How we size tables</a></div>
+<div><h4>Trade</h4><a href="makers.html">Custom makers</a><a href="makers.html#list">List your workshop</a><a href="mailto:hello@tablesizer.com?subject=Sponsorship">Advertising</a><a href="credits.html">Photography credits</a></div></div></footer>
+<script src="site.js" defer></script></body></html>`}
+const sponsor=`<aside class="sponsor"><span class="label">Sponsor</span><p>This space is available to one partner serving workplace and interior design professionals.</p><a class="tlink" href="mailto:hello@tablesizer.com?subject=Sponsorship">Enquire</a></aside>`;
+const news=`<section class="band section news"><div class="wrap"><span class="label">The Conference Room Brief</span><h2>Notes on rooms that work</h2><p class="lede" style="margin:0 auto">A short monthly letter on planning meeting rooms, choosing timber and commissioning furniture.</p><form class="nl"><input type="email" required placeholder="Email address" aria-label="Email address"><button class="tlink">Subscribe</button></form></div></section>`;
+const tail=`<div class="wrap">${sponsor}</div>${news}`;
+const seg=(id,items)=>`<div class="opts-row" id="${id}">${items.map(([v,t])=>`<button type="button" data-v="${v}">${t}</button>`).join('')}</div>`;
+// HOME
+const home=`<section class="hero"><img src="img/hero-meeting-room.jpg" alt="A long wooden meeting table with black chairs in a bright, white-walled room" width="2000" height="1333" fetchpriority="high"><div class="cap"><div class="wrap"><span class="label">The Conference Table Planner</span><h1>The right table, measured for your room.</h1><a class="tlink" href="#planner">Begin planning</a></div></div></section>
+<section class="intro wrap"><span class="label">Plan before you commission</span><h2>Every good room starts with a measurement</h2><p class="lede">Enter the size of your room and the people it needs to seat. The planner draws the space to scale, with chairs and walkways, and suggests the table shapes that suit it.</p></section>
+<section class="planner" id="planner" aria-label="Conference table size calculator"><div class="controls">
+<fieldset><legend>Units</legend>${seg('units',[['imp','Feet & inches'],['met','Metric']])}</fieldset>
+<div class="field"><label for="rlN">Room length <span id="rlU">ft</span></label><div class="pair"><input type="range" id="rlR" aria-label="Room length"><input type="number" id="rlN" inputmode="decimal"></div></div>
+<div class="field"><label for="rwN">Room width <span id="rwU">ft</span></label><div class="pair"><input type="range" id="rwR" aria-label="Room width"><input type="number" id="rwN" inputmode="decimal"></div></div>
+<div class="field"><label for="seatsN">Seats <span id="seatsOut"></span></label><div class="pair"><input type="range" id="seatsR" min="4" max="30" aria-label="Seats"><input type="number" id="seatsN" min="2" max="40"></div>
+<label class="check" style="margin-top:12px"><input type="checkbox" id="auto"> Show the largest table the room allows</label></div>
+<fieldset><legend>Shape</legend>${seg('shape',TP.SHAPES.map(s=>[s,TP.LABEL[s]]))}</fieldset>
+<fieldset><legend>Space per person</legend>${seg('spacing',[[30,'30″ Standard'],[36,'36″ Comfortable'],[42,'42″ Generous']])}</fieldset>
+<fieldset><legend>Clearance to wall</legend>${seg('clear',[[42,'42″'],[48,'48″'],[54,'54″']])}</fieldset>
+<label class="check"><input type="checkbox" id="wall"> Allow for a credenza or display wall at one end (20″)</label>
+</div><div class="output"><div class="printhead"><span class="label">TableSizer · Room plan</span></div><p class="summary" id="ph" aria-live="polite"></p><div id="out" aria-live="polite"></div>
+<div class="actions"><a class="btn" id="quote" href="https://fargowoodworks.com/?utm_source=tablesizer&utm_medium=referral&utm_campaign=planner" rel="sponsored">Request a quote for this table</a><button class="tlink" id="share" type="button">Copy link to plan</button><button class="tlink" id="print" type="button">Print plan</button></div>
+<p class="note">Quotes are provided by our featured maker, Fargo Woodworks. Your table dimensions are passed along with the request.</p></div></section>
+<section class="section"><div class="wrap split"><img src="img/wood-table-detail.jpg" alt="A wooden table top set against a white wall" width="2000" height="1335" loading="lazy">
+<div id="method"><span class="label">How we size tables</span><h2>Considered rules, openly sourced</h2><ul class="method">
+<li>Allow 30″ of table edge per person as a minimum, 36″ for comfort and 42″ where papers and laptops are spread out (${SRC.pd}; ${SRC.ofw}).</li>
+<li>Rectangular and boat tables seat two people for every full spacing along their length, plus one at each end. This reproduces published charts: 48 × 96″ seats eight, 48 × 144″ seats ten.</li>
+<li>Round tables seat their circumference divided by the spacing. At 36″ a 48″ round seats four and a 96″ round seats eight, as in Paul Downs’ chart.</li>
+<li>Racetrack tables combine the straight sides with the curved ends. U and V arrangements seat the outer edge only, open toward a screen.</li>
+<li>Width follows length: 36–42″ to six feet, rising to 60″ and beyond for tables over 22 feet.</li>
+<li>Leave 42–48″ between the table edge and the wall so chairs can be drawn back and people can pass. ${SRC.os} plans four feet on every side.</li></ul></div></div></section>
+<section class="wrap" style="padding-bottom:96px"><div class="trio">
+<a href="conference-table-size-chart.html"><span class="label">Size chart</span><h3>Tables for six to twenty-two</h3><span class="tlink">Read</span></a>
+<a href="conference-table-dimensions.html"><span class="label">Dimensions</span><h3>Standard lengths and widths</h3><span class="tlink">Read</span></a>
+<a href="boardroom-table-sizes.html"><span class="label">Boardroom</span><h3>Proportions for the board table</h3><span class="tlink">Read</span></a></div></section>
+<section class="hero" style="height:min(70vh,640px)"><img src="img/boardroom.jpg" alt="Tables and chairs arranged in a bright boardroom" width="2000" height="1333" loading="lazy"><div class="cap"><div class="wrap"><span class="label">Commission</span><h2 style="max-width:18ch">Have it built to measure</h2><a class="tlink" href="makers.html">View makers</a></div></div></section>
+${tail}
+<script src="calc.js"></script><script src="app.js" defer></script>`;
+const ld=`<script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"WebApplication",name:"TableSizer Conference Table Planner",url:SITE,applicationCategory:"UtilitiesApplication",operatingSystem:"Any",offers:{"@type":"Offer",price:"0",priceCurrency:"USD"}})}</script>`;
+fs.writeFileSync('index.html',page('index.html','Conference Table Size Calculator & Room Planner | TableSizer','Plan a conference room to scale. Enter room size and headcount for the right table length and width, seats by shape, and the clearances you need.',home,ld));
+const art=(h,b,img)=>(img?`<figure class="figure"><img src="img/${img[0]}" alt="${img[1]}" width="2000" height="1333"><figcaption>${img[2]}</figcaption></figure>`:'')+`<article class="article"><span class="label">${h[0]}</span><h1>${h[1]}</h1><p class="lede">${h[2]}</p>${b}<p style="margin-top:36px"><a class="btn outline" href="./#planner">Open the planner</a></p></article>`+tail;
+// DIMENSIONS
+let rows=[72,96,120,144,168,192,216,240,264,288].map(L=>{const w=TP.widthFor(L);return `<tr><td><b>${ft(L)}</b></td><td>${w[0]}–${w[1]} in</td><td>${TP.seatsFor(L,30)}</td><td>${TP.seatsFor(L,36)}</td><td>${Math.ceil((L+96)/12)} × ${Math.ceil((w[1]+96)/12)} ft</td></tr>`}).join('');
+fs.writeFileSync('conference-table-dimensions.html',page('conference-table-dimensions.html','Conference Table Dimensions: Standard Sizes, Lengths & Widths | TableSizer','Standard conference table dimensions: lengths, widths, heights, seats and the room size each table needs.',art(['Guide','Conference table dimensions','Most conference tables are 29–30″ high, 36–60″ wide and 6–24 ft long. Width grows with length so people at the far end can still see and reach the center.'],
+`<div class="tablewrap"><table><thead><tr><th>Length</th><th>Typical width</th><th>Seats @30″</th><th>Seats @36″</th><th>Min. room (48″ clearance)</th></tr></thead><tbody>${rows}</tbody></table></div>
+<h2>Height</h2><p>Standard seated height is 29–30″, paired with standard office chairs. Standing-height tables run about 40–42″.</p>
+<h2>Round tables</h2><p>A 48″ round seats 4 comfortably, 72″ seats 6, 96″ seats 8 and 120″ seats 10 at 36″ per person (${SRC.pd}).</p>
+<h2>How the numbers work</h2><p>Allow 30″ of edge per person (36″ to be comfortable), one person at each end, and 42–48″ from the table edge to the wall (${SRC.ofw}; ${SRC.os}). See <a href="./#method">how we size tables</a>.</p>`,['wood-table-detail.jpg','A wooden table top set against a white wall','Photograph: Crew, via Unsplash (CC0). Illustrative only.'])));
+// CHART
+rows=[6,8,10,12,14,16,18,20,22].map(n=>{const a=TP.lengthFor(n,30),b=TP.lengthFor(n,36),w=TP.widthFor(b);return `<tr><td><b>${n}</b></td><td>${ft(a)}</td><td>${ft(b)}</td><td>${w[0]}–${w[1]} in</td><td>${Math.ceil((b+96)/12)} × ${Math.ceil((w[1]+96)/12)} ft</td><td><a class="tlink" href="./?n=${n}&s=36&l=${b+96+24}&w=${w[1]+96+12}">Plan</a></td></tr>`}).join('');
+fs.writeFileSync('conference-table-size-chart.html',page('conference-table-size-chart.html','Conference Table Size Chart: Seats 6 to 22 | TableSizer','Conference table size by number of seats, 6 to 22 people: table length, width and room size for standard and comfortable spacing.',art(['Size chart','Conference table size chart: 6 to 22 seats','Find the table length for your headcount. Rectangular tables, one seat at each end, lengths rounded up to the nearest 6″.'],
+`<div class="tablewrap"><table><thead><tr><th>Seats</th><th>Standard 30″</th><th>Comfortable 36″</th><th>Width</th><th>Room (36″, 48″ clearance)</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+<p>For rooms used mainly for video calls, a U or V arrangement keeps the screen wall clear. Beyond sixteen people, a boat or racetrack shape improves sightlines down the table.</p><p hidden> A U or V shape leaves the screen wall open. Over 16 people, consider a boat or racetrack shape for sightlines. Sources: ${SRC.pd}, ${SRC.ofw}.</p>`,['hero-meeting-room.jpg','A long wooden meeting table with black chairs in a bright room','Photograph: Breather, via Unsplash (CC0). Illustrative only.'])));
+// BOARDROOM
+rows=[8,10,12,14,16,18,20,22].map(n=>{const a=TP.lengthFor(n,36),b=TP.lengthFor(n,42),w=TP.widthFor(b);return `<tr><td><b>${n}</b></td><td>${ft(a)}</td><td>${ft(b)}</td><td>${w[0]}–${w[1]} in</td></tr>`}).join('');
+fs.writeFileSync('boardroom-table-sizes.html',page('boardroom-table-sizes.html','Boardroom Table Sizes: How Big Should Your Boardroom Table Be? | TableSizer','Boardroom table sizes for 8 to 22 board members, best shapes, materials and room sizes.',art(['Guide','Boardroom table sizes','Boardrooms usually use comfortable or generous spacing (36–42″ per person), which makes the table longer than a standard meeting table for the same headcount.'],
+`<div class="tablewrap"><table><thead><tr><th>Board seats</th><th>Length @36″</th><th>Length @42″</th><th>Width</th></tr></thead><tbody>${rows}</tbody></table></div>
+<h2>Shapes</h2><ul><li><b>Rectangle:</b> most seats per foot.</li><li><b>Boat:</b> wider in the middle so everyone can see everyone.</li><li><b>Racetrack:</b> rounded ends, a softer look.</li><li><b>Two-piece:</b> long tables can be built in sections for elevators and tight stairs.</li></ul>
+<h2>Materials</h2><p>Solid hardwood (walnut, white oak, maple, cherry) lasts for decades and can be refinished. Veneer and laminate cost less up front.</p><p>Spacing source: ${SRC.pd}.</p>`,['boardroom.jpg','Tables and chairs arranged in a bright boardroom','Photograph: Breather, via Unsplash (CC0). Illustrative only.'])));
+// MAKERS
+const fw='https://fargowoodworks.com/?utm_source=tablesizer&utm_medium=referral&utm_campaign=makers';
+fs.writeFileSync('makers.html',page('makers.html','Custom Conference Table Makers: Compare & Request Quotes | TableSizer','Custom solid-wood conference table makers: seating, starting price, lead time and delivery, taken from each maker’s own website.',
+`<article class="article" style="max-width:1180px"><span class="label">Makers</span><h1>Commission a conference table</h1><p class="lede">Workshops that build conference tables to order. Every detail below is taken from the maker’s own website.</p>
+<section class="maker"><div><img src="img/fargo-hartford.jpg" alt="Fargo Woodworks Hartford conference table in solid hardwood" width="2000" height="1116" loading="lazy"><p class="credit">Image: Fargo Woodworks, from fargowoodworks.com.</p></div>
+<div><span class="label">Featured maker</span><h2>Fargo Woodworks</h2><p>The Hartford Conference Table, in solid North American hardwood, built one piece at a time in Fargo, North Dakota, to your choice of species, dimensions, edge profile and finish.</p>
+<dl><dt>Seats</dt><dd>10–22</dd><dt>From</dt><dd>$5,000</dd><dt>Lead time</dt><dd>8–12 weeks, made to order</dd><dt>Material</dt><dd>Solid hardwood</dd><dt>Workshop</dt><dd>Fargo, North Dakota</dd><dt>Delivery</dt><dd>White-glove, nationwide</dd><dt>Personalisation</dt><dd>Engraved or hand-inlaid logo</dd></dl>
+<a class="btn" href="${fw}" rel="sponsored">Request a quote</a><p class="note">Featured listing. Source: fargowoodworks.com.</p></div></section>
+<section id="list" style="margin-top:88px;border-top:1px solid var(--rule);padding-top:48px;text-align:center"><span class="label">For workshops</span><h2>List your workshop</h2><p class="lede" style="margin:0 auto 26px">If you build conference tables, boardroom tables or reception desks, a listing places your work in front of buyers who already know their size.</p><a class="btn outline" href="mailto:hello@tablesizer.com?subject=Maker%20listing">Enquire about listing</a><p class="note">Listings open soon.</p></section></article>`+tail));
+fs.writeFileSync('credits.html',page('credits.html','Photography Credits | TableSizer','Credits and licences for photography used on TableSizer.',`<article class="article"><span class="label">Credits</span><h1>Photography</h1><p class="lede">Editorial photographs are illustrative and do not depict any listed maker’s products unless stated.</p>
+<table><thead><tr><th>Image</th><th>Photographer</th><th>Licence & source</th></tr></thead><tbody>
+<tr><td>Long wooden meeting table (home, size chart)</td><td>Breather</td><td>CC0 / Unsplash. <a href="https://commons.wikimedia.org/wiki/File:Large_meeting_room_(Unsplash).jpg">Wikimedia Commons</a></td></tr>
+<tr><td>Wooden table detail (home, dimensions)</td><td>Crew</td><td>CC0 / Unsplash. <a href="https://commons.wikimedia.org/wiki/File:Wood_table_in_front_of_white_wall_(Unsplash).jpg">Wikimedia Commons</a></td></tr>
+<tr><td>Boardroom (home, boardroom guide)</td><td>Breather</td><td>CC0 / Unsplash. <a href="https://commons.wikimedia.org/wiki/File:Tables_in_a_boardroom_(Unsplash).jpg">Wikimedia Commons</a></td></tr>
+<tr><td>Hartford Conference Table (makers)</td><td>Fargo Woodworks</td><td>Used for the Fargo Woodworks listing; from <a href="https://fargowoodworks.com">fargowoodworks.com</a></td></tr></tbody></table></article>`));
+console.log('built');

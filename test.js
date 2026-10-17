@@ -1,9 +1,17 @@
-const TP=require('./calc.js').TP, a=require('assert');
-// Matches Paul Downs chart (30in): 96in->8, 144in->10, 168in->12, 216in->16
-a.equal(TP.seatsFor(96,30),8);a.equal(TP.seatsFor(144,30),10);a.equal(TP.seatsFor(168,30),12);a.equal(TP.seatsFor(216,30),16);
-a.equal(TP.lengthFor(10,30),120);a.equal(TP.lengthFor(10,36),144);a.equal(TP.lengthFor(22,30),300);
-let r=TP.plan({roomL:20,roomW:14,seats:10,spacing:30,clearance:48});a.ok(r.fits);console.log('20x14,10 seats:',JSON.stringify(r));
-r=TP.plan({roomL:12,roomW:10,seats:12,spacing:36,clearance:48});a.ok(!r.fits);console.log('12x10,12 seats:',r.warnings[0]);
-r=TP.plan({roomL:8,roomW:8,spacing:30,clearance:48});a.equal(r.maxSeats,0);console.log('8x8:',r.warnings[0]);
-r=TP.plan({roomL:30,roomW:20,spacing:30,clearance:48});console.log('30x20 max seats:',r.maxSeats,r.maxLength,r.maxWidth);
-console.log('ALL TESTS PASSED');
+const TP=require('./calc.js').TP, a=require('assert');let n=0;const t=(m,f)=>{f();n++;console.log('ok',m)};
+t('rectangle matches Paul Downs chart @30in',()=>{a.equal(TP.seatsFor(96,30),8);a.equal(TP.seatsFor(144,30),10);a.equal(TP.seatsFor(168,30),12);a.equal(TP.seatsFor(216,30),16)});
+t('lengthFor',()=>{a.equal(TP.lengthFor(10,30),120);a.equal(TP.lengthFor(10,36),144);a.equal(TP.lengthFor(22,30),300)});
+t('round matches Paul Downs round column @36in',()=>{a.equal(TP.seatsOn('round',48,48,36),4);a.equal(TP.seatsOn('round',72,72,36),6);a.equal(TP.seatsOn('round',96,96,36),8);a.equal(TP.seatsOn('round',120,120,36),10)});
+t('racetrack 144x48 @30 = 10 (same as rectangle)',()=>a.equal(TP.seatsOn('racetrack',144,48,30),10));
+t('boat seats like rectangle',()=>a.equal(TP.seatsOn('boat',144,54,30),10));
+t('U outside-only seating',()=>a.equal(TP.seatsOn('u',120,96,30),2*4+3));
+t('V seats both legs outside',()=>a.equal(TP.seatsOn('v',150,150,30),10));
+t('tableFor returns table seating >= n for every shape',()=>{for(const s of TP.SHAPES)for(const n of [6,8,10,12,16,20,22])for(const sp of [30,36]){const x=TP.tableFor(s,n,sp);a.ok(TP.seatsOn(s,x.L,x.W,sp)>=n,s+n+sp)}});
+t('chair count equals seat count',()=>{for(const s of TP.SHAPES){const x=TP.tableFor(s,12,30);a.equal(TP.chairs(s,x,30).length,TP.seatsOn(s,x.L,x.W,30),s)}});
+t('20x14 room, 10 seats fits rectangle',()=>{const r=TP.plan({roomL:20*12,roomW:14*12,seats:10,spacing:30,clearance:48});a.ok(r.fits);a.equal(r.table.L,120);a.equal(r.maxSeats,10)});
+t('12x10 room too small',()=>a.equal(TP.plan({roomL:144,roomW:120,spacing:36,clearance:48}).maxSeats,0));
+t('30x20 room max rectangle',()=>{const r=TP.plan({roomL:360,roomW:240,spacing:30,clearance:48});a.equal(r.maxLength,264);a.equal(r.maxSeats,18)});
+t('credenza wall shortens usable length',()=>{const a1=TP.usable({roomL:240,roomW:168,clearance:48}),b=TP.usable({roomL:240,roomW:168,clearance:48,wall:true});a.equal(a1.x-b.x,20)});
+t('whatFits returns 1-3 fitting options',()=>{const o=TP.whatFits({roomL:300,roomW:204,seats:12,spacing:30,clearance:48});a.ok(o.length>=1&&o.length<=3);o.forEach(x=>a.ok(x.seats>=12))});
+t('too-many-seats warns',()=>{const r=TP.plan({roomL:240,roomW:168,seats:20,spacing:36,clearance:48});a.ok(!r.fits);a.ok(r.warnings.length)});
+console.log(n+' TESTS PASSED');

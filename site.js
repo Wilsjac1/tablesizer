@@ -1,0 +1,1 @@
+document.querySelectorAll('form.nl').forEach(function(f){f.addEventListener('submit',function(e){e.preventDefault();f.outerHTML='<p class="note">Thank you. The newsletter launches soon; nothing has been sent yet.</p>'})});
