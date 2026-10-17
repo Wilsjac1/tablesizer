@@ -21,7 +21,7 @@ $('#wall').checked=S.wall;$('#wall').addEventListener('change',function(e){S.wal
 D.querySelectorAll('#presets button').forEach(function(b){b.addEventListener('click',function(){var p=TP.PRESETS[+b.dataset.i];if(!p)return;
  S.l=p.roomL;S.w=p.roomW;S.n=p.seats;S.auto=false;S.sh=p.shape;S.wall=!!p.wall;if(p.clearance)S.c=p.clearance;
  sr.value=sn.value=S.n;$('#auto').checked=false;$('#wall').checked=S.wall;syncL();syncW();track('preset',{preset:p.id});go();})});
-var _pt;function track(n,d){if(window.tsTrack){clearTimeout(_pt);_pt=setTimeout(function(){window.tsTrack(n,d||{shape:S.sh,seats:S.n,room_in:[S.l,S.w]})},900)}}
+var _pt;function track(n,d){clearTimeout(_pt);_pt=setTimeout(function(){var tries=0;(function go2(){if(window.tsTrack)window.tsTrack(n,d||{shape:S.sh,seats:S.n,room_in:[S.l,S.w]});else if(++tries<20)setTimeout(go2,500)})()},900)}
 
 function seg(id,key,num){var g=$('#'+id);g.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){S[key]=num?+b.dataset.v:b.dataset.v;if(key==='u'){syncL();syncW()}go()})});
  return function(){g.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v==String(S[key])))})}}

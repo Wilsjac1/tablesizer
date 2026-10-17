@@ -11,7 +11,7 @@ return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="v
 <meta name="theme-color" content="#f7f5f1"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='12' width='26' height='8' fill='%23222'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">${extra}</head><body><a class="skip" href="#main">Skip to content</a>
+<link rel="stylesheet" href="style.css"><script data-goatcounter="https://tablesizer.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>${extra}</head><body><a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="wrap"><a class="brand" href="./">TableSizer</a></div></header><nav class="nav" aria-label="Primary"><div class="wrap">${nav}</div></nav>
 <main id="main">${body}</main>
 <footer><div class="wrap"><div><h4>TableSizer</h4><p>A planning reference for conference and boardroom tables. Guidance only; confirm final dimensions with your maker.</p><p>© 2026 TableSizer</p></div>

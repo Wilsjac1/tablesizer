@@ -1,7 +1,9 @@
 # Analytics & Search Console — what Jake needs to do (no accounts created by the agent)
 
 ## Analytics — STATUS (Oct 16, 2026)
-**Done:** GoatCounter account created by Jake (site code `tablesizer`, https://tablesizer.goatcounter.com, account email Jake@fargowoodworks.com). `site.js` is configured with `provider: 'goatcounter', goatCounterCode: 'tablesizer'` and the snippet is live on tablesizer.com.
+**Done:** GoatCounter account created by Jake (site code `tablesizer`, https://tablesizer.goatcounter.com, account email Jake@fargowoodworks.com). `site.js` is configured with `provider: 'goatcounter', goatCounterCode: 'tablesizer'`, and the standard GoatCounter snippet is in every page's `<head>` (via `build.js`) with custom events bridged from `site.js`.
+**Debugged Oct 16, 2026:** a headless visit proved the pageview POST to `tablesizer.goatcounter.com/count` returns 200. Two real bugs were fixed: (1) events fired before `site.js` loaded were silently dropped, so the first `planner_used` never sent — delivery now retries until GoatCounter is ready; (2) the dynamically injected script was replaced with the plain static snippet for reliability (keeping the injector would have double-counted). Note that GoatCounter filters bots/headless browsers server-side, so automated checks may return 200 without appearing in the dashboard; a normal browser visit is what clears the 'No data received' banner.
+**Email verification vs. tracking are separate:** an unverified account email affects account management, not whether the count endpoint accepts hits. 'No data received' is a tracking/data question, not a verification one.
 **Pending (Jake only):** GoatCounter email verification for Jake@fargowoodworks.com — click the verification link in that inbox. Until verified, some account features may be limited; pageview counting does not depend on this code change.
 
 Code is in `site.js` (`window.TABLESIZER_ANALYTICS`, top of file). No cookies are set by our code.
