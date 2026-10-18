@@ -1,0 +1,45 @@
+Subject: Your conference room starter plan
+Preheader: Thank you for joining The Conference Room Brief. Start with the right size, clearance, and seating.
+
+Headline: Your conference room starter plan
+Eyebrow: The Conference Room Brief
+Subhead: A short, useful place to start, before you pick a table
+
+Intro:
+Hi there,
+
+Thank you for joining The Conference Room Brief. You will get short, useful notes on sizing and planning a conference room, with no junk. Start here whenever you are ready. The free planner takes about a minute and shows your table in your room.
+
+Primary button: Size my table free
+Link: https://tablesizer.com/
+Secondary button: See the size chart
+Link: https://tablesizer.com/conference-table-size-chart.html
+
+Section: Start here
+Best first step: Size the table for your people and your room, not for the room alone.
+Clearance: Leave 36 to 42 inches from the table edge to the wall as a working minimum. More is more comfortable if you have it.
+Seating: Allow about 24 to 30 inches of table edge per person. Use 24 inches for a tight fit and 30 inches for executive chairs.
+Screen: If you meet on video, keep one end open for the display and camera, then size the screen from the farthest seat.
+Delivery path: Measure doors, hallway turns, stairs, and the elevator before you order a long top.
+
+Section: What we checked for you
+Walkways. Measure from the edge of the table to the wall. That space has to hold a pushed back chair and still let people move. At 36 inches people will turn sideways to pass a seated person. At 48 inches someone can walk behind a seated person without anyone scooting in.
+Width. Up to 9 feet long, 42 inches wide is a good guide. Use 48 inches for 10 to 14 feet, 54 inches for 15 to 19 feet, and 60 inches for 20 feet and longer. If your room is narrow, drop to the next width down rather than squeeze the walkways.
+Seating. The chair decides the spacing more than the table does. Allow about 26 inches per person for task chairs, 30 inches for executive chairs, and 34 inches for large executive chairs with wide arms. The free planner shows comfortable and up to seating side by side.
+Getting it in. The most common surprise is not the room, it is the path to it. Measure door openings, hallway turns, stairwells, and the elevator door and inside depth. Long tops can be built in two pieces with a tight, supported seam so they carry in safely.
+Power. Plan about one power box for every four seats, set down the center so cords never cross the top. Plan the screen end and power at the same time, before the size is final.
+
+Dark block:
+Headline: Want your exact size?
+Body: Enter your headcount and room size and get a size, a floor plan, and the checks above for your room. Free, with no obligation.
+Button: Size my table free
+Link: https://tablesizer.com/
+Secondary link: See the conference table size chart
+Link: https://tablesizer.com/conference-table-size-chart.html
+
+Footer:
+TableSizer, The Conference Room Brief
+Questions? Reply to this email or call 701-847-0136.
+
+Mailing address: Fargo Woodworks, 601 15th St N, Fargo, ND 58102
+Unsubscribe: use the Loops unsubscribe merge tag or the unsubscribe footer Loops adds in the editor. Test the link before activating the workflow.

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" role="img" aria-label="TableSizer">
+<title>TableSizer, Conference Table Planner</title>
+
+<!-- Option C: wordmark only with measurement rule -->
+<text x="610" y="152" text-anchor="middle" font-family="'Cormorant Garamond', Cormorant Garamond, Georgia, serif" font-size="96" font-weight="500" letter-spacing="20" fill="#38332E">TABLESIZER</text>
+<line x1="190" y1="198" x2="1010" y2="198" stroke="#38332E" stroke-width="1.4"/>
+<line x1="190" y1="198" x2="190" y2="214" stroke="#38332E" stroke-width="1.2"/><line x1="272" y1="198" x2="272" y2="205" stroke="#38332E" stroke-width="1.2"/><line x1="354" y1="198" x2="354" y2="209" stroke="#38332E" stroke-width="1.2"/><line x1="436" y1="198" x2="436" y2="205" stroke="#38332E" stroke-width="1.2"/><line x1="518" y1="198" x2="518" y2="209" stroke="#38332E" stroke-width="1.2"/><line x1="600" y1="198" x2="600" y2="214" stroke="#38332E" stroke-width="1.2"/><line x1="682" y1="198" x2="682" y2="209" stroke="#38332E" stroke-width="1.2"/><line x1="764" y1="198" x2="764" y2="205" stroke="#38332E" stroke-width="1.2"/><line x1="846" y1="198" x2="846" y2="209" stroke="#38332E" stroke-width="1.2"/><line x1="928" y1="198" x2="928" y2="205" stroke="#38332E" stroke-width="1.2"/><line x1="1010" y1="198" x2="1010" y2="214" stroke="#38332E" stroke-width="1.2"/>
+<text x="604" y="272" text-anchor="middle" font-family="'Jost', 'Helvetica Neue', Arial, sans-serif" font-size="19" font-weight="400" letter-spacing="8" fill="#564739">CONFERENCE TABLE PLANNER</text>
+</svg>
