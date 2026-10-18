@@ -44,15 +44,26 @@ window.TABLESIZER_ANALYTICS = { provider: 'goatcounter', goatCounterCode: 'table
   function ssSet(k, v) { try { if (window.sessionStorage) window.sessionStorage.setItem(k, v); } catch (err) {} }
   var EXIT_SUPPRESS_MS = 30 * 24 * 60 * 60 * 1000;
   function markSubscribed() { lsSet('tablesizer_subscribed', '1'); lsSet('tablesizer_exit_suppressed_until', String(Date.now() + EXIT_SUPPRESS_MS)); }
+  // Last line of defence at the submission source: if a hidden plan field
+  // still holds a raw machine size (e.g. a browser cached the pre-fix app.js
+  // while loading this file fresh), convert inches to the planner's friendly
+  // feet/inches display before anything is posted to Loops.
+  function friendlySize(value) {
+    var s = String(value || '').trim();
+    var m = s.match(/^(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?)in$/i);
+    if (!m) return s;
+    function fmtIn(inches) { var total = Math.round(+inches), ft = Math.floor(total / 12), rem = total % 12; return ft ? (ft + '\u2032' + (rem ? ' ' + rem + '\u2033' : '')) : (rem + '\u2033'); }
+    return fmtIn(m[1]) + ' \u00d7 ' + fmtIn(m[2]);
+  }
   function buildPlanBody(fields) {
     fields = fields || {};
     var body = new URLSearchParams();
     body.set('email', String(fields.email || '').trim());
     body.set('firstName', String(fields.firstName || '').trim());
-    body.set('tableSize', String(fields.tableSize || ''));
+    body.set('tableSize', friendlySize(fields.tableSize));
     body.set('seats', String(fields.seats == null ? '' : fields.seats));
     body.set('shape', String(fields.shape || ''));
-    body.set('roomSize', String(fields.roomSize || ''));
+    body.set('roomSize', friendlySize(fields.roomSize));
     body.set('planUrl', String(fields.planUrl || ''));
     // Every plan save joins Size Chart Requests. The TableSizer list is
     // added (second, comma-separated) only on explicit opt-in.
@@ -74,7 +85,7 @@ window.TABLESIZER_ANALYTICS = { provider: 'goatcounter', goatCounterCode: 'table
       });
     });
   }
-  window.TABLESIZER_LOOPS = { endpoint: LOOPS_ENDPOINT, mailingListId: LOOPS_LIST_ID, sizeChartListId: LOOPS_SIZE_CHART_LIST_ID, successCopy: LOOPS_SUCCESS, errorCopy: LOOPS_ERROR, buildBody: loopsBody, buildPlanBody: buildPlanBody, post: loopsPost, markSubscribed: markSubscribed };
+  window.TABLESIZER_LOOPS = { endpoint: LOOPS_ENDPOINT, mailingListId: LOOPS_LIST_ID, sizeChartListId: LOOPS_SIZE_CHART_LIST_ID, successCopy: LOOPS_SUCCESS, errorCopy: LOOPS_ERROR, buildBody: loopsBody, buildPlanBody: buildPlanBody, friendlySize: friendlySize, post: loopsPost, markSubscribed: markSubscribed };
   document.querySelectorAll('form.nl').forEach(function (f) {
     f.addEventListener('submit', function (e) {
       window.tsTrack('newsletter_click', {});
