@@ -1,0 +1,49 @@
+<mjml>
+  <mj-head>
+    <mj-title>Your {tableSize} size chart</mj-title>
+    <mj-preview>Your table size, room checks, and next steps, in one place.</mj-preview>
+    <mj-attributes><mj-all font-family="Inter, Helvetica, Arial, sans-serif" /></mj-attributes>
+  </mj-head>
+  <mj-body background-color="#F7F6F4" width="600px">
+    <mj-section background-color="#F7F6F4" padding="0px">
+      <mj-column padding="0px">
+        <mj-raw>
+<div style="display:none;max-height:0;overflow:hidden;">Your table size, room checks, and next steps, in one place.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F6F4;"><tr><td align="center" style="padding:28px 12px;">
+<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;background:#FDFDFC;">
+<tr><td class="pad" align="center" style="padding:34px 44px 18px;"><a href="https://tablesizer.com/" style="text-decoration:none;"><img src="img/tablesizer-logo.png" width="340" alt="TableSizer" style="display:block;width:340px;max-width:82%;height:auto;border:0;margin:0 auto;"/></a></td></tr>
+<tr><td class="pad" style="padding:6px 44px 0;font-family:Inter,Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#817365;text-align:center;">Your size chart</td></tr>
+<tr><td class="pad big" style="padding:10px 44px 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:52px;line-height:1.05;color:#38332E;text-align:center;">Your {tableSize} size chart</td></tr>
+<tr><td class="pad" style="padding:8px 44px 0;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:21px;color:#564739;text-align:center;">Your starting size, checked against your room</td></tr>
+<tr><td class="pad" style="padding:24px 44px 0;font-family:Inter,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#362E26;">Hi {firstName},<br/><br/>Here is the size chart you asked for, with the checks we use for every table. Open your plan to see the table in your room, or size another table if you are comparing options.</td></tr>
+<tr><td class="pad" style="padding:24px 44px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;color:#362E26;">
+<tr><td colspan="2" style="padding:0 0 8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#38332E;font-weight:600;border-bottom:1px solid #38332E;">Your summary</td></tr>
+<tr><td style="padding:9px 0;border-bottom:1px solid #E6E1DA;color:#817365;width:35%;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;">Table</td><td style="padding:9px 0;border-bottom:1px solid #E6E1DA;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;color:#362E26;">{tableSize}</td></tr>
+<tr><td style="padding:9px 0;border-bottom:1px solid #E6E1DA;color:#817365;width:35%;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;">Seats</td><td style="padding:9px 0;border-bottom:1px solid #E6E1DA;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;color:#362E26;">{seats}</td></tr>
+<tr><td style="padding:9px 0;border-bottom:1px solid #E6E1DA;color:#817365;width:35%;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;">Shape</td><td style="padding:9px 0;border-bottom:1px solid #E6E1DA;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;color:#362E26;">{shape}</td></tr>
+<tr><td style="padding:9px 0;border-bottom:1px solid #E6E1DA;color:#817365;width:35%;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;">Room</td><td style="padding:9px 0;border-bottom:1px solid #E6E1DA;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;color:#362E26;">{roomSize}</td></tr>
+</table></td></tr>
+<tr><td class="pad" align="center" style="padding:24px 44px 6px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+<td style="background:#564739;"><a href="{planUrl}" style="display:inline-block;padding:15px 26px;font-family:Inter,Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:#FBFAF9;text-decoration:none;">Open my plan</a></td>
+<td width="10"></td>
+<td style="border:1px solid #564739;"><a href="https://tablesizer.com/" style="display:inline-block;padding:14px 22px;font-family:Inter,Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:#564739;text-decoration:none;">Size another table</a></td>
+</tr></table></td></tr>
+<tr><td class="pad" style="padding:30px 44px 0;font-family:Inter,Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#38332E;font-weight:600;">What we checked for you</td></tr>
+<tr><td class="pad" style="padding:14px 44px 0;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#362E26;"><b style="color:#38332E;">Walkways.</b> Leave 36 to 42 inches from the table edge to the wall. At 36 inches people turn sideways to pass a seated person. At 48 inches they can pass without anyone scooting in.</td></tr>
+<tr><td class="pad" style="padding:14px 44px 0;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#362E26;"><b style="color:#38332E;">Seating.</b> Allow 24 to 30 inches of table edge per person. Use 24 inches for a tight fit and 30 inches for executive chairs.</td></tr>
+<tr><td class="pad" style="padding:14px 44px 0;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#362E26;"><b style="color:#38332E;">Width and power.</b> Up to 9 feet long, 42 inches wide is a good guide, and wider for longer tables. Plan about one power box for every four seats, set down the center so cords never cross the top.</td></tr>
+<tr><td class="pad" style="padding:14px 44px 0;font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#362E26;"><b style="color:#38332E;">Getting it in.</b> Measure door openings, hallway turns, stairwells, and the elevator before you order a long top.</td></tr>
+<tr><td class="pad" style="padding:34px 44px 0;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#1A1A1A;"><tr><td style="padding:30px 28px;text-align:center;">
+<div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:1.15;color:#FFFFFF;">Want an exact quote for this size?</div>
+<div style="font-family:Inter,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#FBFAF9;padding:8px 0 20px;">Get a quote from Fargo Woodworks for a table in this size range. No obligation.</div>
+<a href="https://fargowoodworks.com/" style="display:inline-block;background:#FBFAF9;padding:14px 24px;font-family:Inter,Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:#1A1A1A;text-decoration:none;">Get a quote</a>
+</td></tr></table></td></tr>
+<tr><td class="pad" style="padding:26px 44px 34px;font-family:Inter,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#817365;text-align:center;">TableSizer<br/>Questions? Reply to this email or call 701-847-0136.<br/><br/>Mailing address: Fargo Woodworks, 601 15th St N, Fargo, ND 58102<br/><a href="{unsubscribe_link}" style="color:#817365;">Unsubscribe</a></td></tr>
+</table></td></tr></table>
+</mj-raw>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

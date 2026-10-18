@@ -68,6 +68,14 @@ function go(){segs.forEach(function(f){f()});
  // URL + CTA
  var p=new URLSearchParams({l:S.l,w:S.w,n:S.auto?0:S.n,s:S.s,c:S.c,sh:S.sh});if(S.wall)p.set('wall','1');if(met())p.set('u','met');
  history.replaceState(null,'','?'+p.toString());
+ // Save card + exit pop: sync size copy and Loops config fields in place.
+ // Only text/hidden values change here, so typed first name/email are never wiped.
+ var planState={tableSize:t?(t.L+'x'+t.W+'in'):'',sizeLabel:t?(fmt(t.L)+' \u00d7 '+fmt(t.W)):'',seats:r.seats,shape:S.sh,roomSize:(S.l+'x'+S.w+'in'),planUrl:location.href};
+ window.TABLESIZER_PLAN=planState;
+ D.querySelectorAll('[data-save-size]').forEach(function(e){e.textContent=planState.sizeLabel?(planState.sizeLabel+' '+shapeName(S.sh).toLowerCase()+' table'):'current table'});
+ D.querySelectorAll('[data-save-seats]').forEach(function(e){e.textContent=r.seats+' people'});
+ D.querySelectorAll('[data-save-room]').forEach(function(e){e.textContent=fmt(S.l)+' \u00d7 '+fmt(S.w)+' room'});
+ D.querySelectorAll('form.save-form').forEach(function(f){f.setAttribute('data-size-label',planState.sizeLabel);f.querySelectorAll('[data-plan-field]').forEach(function(h){var k=h.getAttribute('data-plan-field');if(planState[k]!=null)h.value=planState[k]})});
  if(t){var cta=new URLSearchParams({utm_source:'tablesizer',utm_medium:'referral',utm_campaign:'planner',shape:S.sh,length_in:t.L,width_in:t.W,seats:r.seats,size:t.L+'x'+t.W+'in'});
   $('#quote').href='https://fargowoodworks.com/?'+cta.toString();$('#quote').textContent='Request a quote for this table'}
  track('planner_used');
