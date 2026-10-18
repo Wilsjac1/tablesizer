@@ -70,7 +70,8 @@ function go(){segs.forEach(function(f){f()});
  history.replaceState(null,'','?'+p.toString());
  // Save card + exit pop: sync size copy and Loops config fields in place.
  // Only text/hidden values change here, so typed first name/email are never wiped.
- var planState={tableSize:t?(t.L+'x'+t.W+'in'):'',sizeLabel:t?(fmt(t.L)+' \u00d7 '+fmt(t.W)):'',seats:r.seats,shape:S.sh,roomSize:(S.l+'x'+S.w+'in'),planUrl:location.href};
+ var sizeLabel=t?(fmt(t.L)+' \u00d7 '+fmt(t.W)):'';
+ var planState={tableSize:sizeLabel,sizeLabel:sizeLabel,seats:r.seats,shape:S.sh,roomSize:(fmt(S.l)+' \u00d7 '+fmt(S.w)),planUrl:location.href};
  window.TABLESIZER_PLAN=planState;
  D.querySelectorAll('[data-save-size]').forEach(function(e){e.textContent=planState.sizeLabel?(planState.sizeLabel+' '+shapeName(S.sh).toLowerCase()+' table'):'current table'});
  D.querySelectorAll('[data-save-seats]').forEach(function(e){e.textContent=r.seats+' people'});
